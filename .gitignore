@@ -1,0 +1,6 @@
+*.js
+*.d.ts
+typings
+node_modules
+booleans.io
+*.log

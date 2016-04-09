@@ -26,6 +26,9 @@ export class Boolean {
 	constructor(private _id: string) {
 	}
 
+	/**
+	 * The ID of your remote boolean
+	 */
 	get id(): string {
 		return this._id;
 	}

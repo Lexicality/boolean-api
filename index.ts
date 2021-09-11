@@ -1,4 +1,4 @@
-import request = require('request-promise');
+import request = require("request-promise");
 
 interface IBooleanResult {
 	id: string;
@@ -13,7 +13,7 @@ function resultToCallback(res: IBooleanResult): boolean {
 	return res.val;
 }
 
-const APIURL = 'https://api.booleans.io';
+const APIURL = "https://api.booleans.io";
 //const APIURL = 'http://posttestserver.com/post.php?dir=myself';
 
 export type BooleanCallback = (result: boolean) => void;
@@ -22,8 +22,7 @@ export type BooleanCallback = (result: boolean) => void;
  * Utility class for accessing your remote booleans
  */
 export class Boolean {
-	constructor(private _id: string) {
-	}
+	constructor(private _id: string) {}
 
 	/**
 	 * The ID of your remote boolean
@@ -40,12 +39,12 @@ export class Boolean {
 	public set(value: boolean): Promise<boolean> {
 		this.sanityCheck();
 		return request({
-				uri: `${APIURL}/${this.id}`,
-				method: 'PUT',
-				form: {
-					val: value
-				}
-			})
+			uri: `${APIURL}/${this.id}`,
+			method: "PUT",
+			form: {
+				val: value,
+			},
+		})
 			.then(jsonPls)
 			.then(resultToCallback);
 	}
@@ -56,7 +55,9 @@ export class Boolean {
 	 */
 	public get(): Promise<boolean> {
 		this.sanityCheck();
-		return request(`${APIURL}/${this.id}`).then(jsonPls).then(resultToCallback);
+		return request(`${APIURL}/${this.id}`)
+			.then(jsonPls)
+			.then(resultToCallback);
 	}
 
 	/**
@@ -66,9 +67,9 @@ export class Boolean {
 	public toggle(): Promise<boolean> {
 		this.sanityCheck();
 		return request({
-				uri: `${APIURL}/${this.id}`,
-				method: 'PUT'
-			})
+			uri: `${APIURL}/${this.id}`,
+			method: "PUT",
+		})
 			.then(jsonPls)
 			.then(resultToCallback);
 	}
@@ -80,12 +81,11 @@ export class Boolean {
 	public destroy(): Promise<void> {
 		this.sanityCheck();
 		return request({
-				uri: `${APIURL}/${this.id}`,
-				method: 'DELETE'
-			})
-			.then(() => {
-				this._id = '';
-			});
+			uri: `${APIURL}/${this.id}`,
+			method: "DELETE",
+		}).then(() => {
+			this._id = "";
+		});
 	}
 
 	/**
@@ -94,15 +94,17 @@ export class Boolean {
 	 * @param onFalse Callback if the boolean is false
 	 * @return Utility promise
 	 */
-	public if(onTrue: BooleanCallback, onFalse: BooleanCallback): Promise<void> {
-		return this.get()
-			.then((res) => {
-				if (res) {
-					onTrue(res);
-				} else {
-					onFalse(res);
-				}
-			});
+	public if(
+		onTrue: BooleanCallback,
+		onFalse: BooleanCallback,
+	): Promise<void> {
+		return this.get().then((res) => {
+			if (res) {
+				onTrue(res);
+			} else {
+				onFalse(res);
+			}
+		});
 	}
 
 	private sanityCheck() {
@@ -112,14 +114,14 @@ export class Boolean {
 	}
 }
 
-export function createBoolean(initialValue: boolean = false): Promise<Boolean> {
-		return request({
-				uri: APIURL,
-				method: 'POST',
-				form: {
-					val: initialValue
-				}
-			})
+export function createBoolean(initialValue = false): Promise<Boolean> {
+	return request({
+		uri: APIURL,
+		method: "POST",
+		form: {
+			val: initialValue,
+		},
+	})
 		.then(jsonPls)
 		.then((res: IBooleanResult) => new Boolean(res.id));
 }

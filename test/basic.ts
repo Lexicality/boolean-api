@@ -1,4 +1,3 @@
-/// <reference path="../typings/tsd.d.ts"/>
 import { Boolean, createBoolean } from '../index';
 import sinon = require('sinon');
 import chai = require('chai');

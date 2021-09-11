@@ -1,4 +1,3 @@
-/// <reference path="typings/tsd.d.ts" />
 import request = require('request-promise');
 
 interface IBooleanResult {

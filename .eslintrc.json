@@ -7,7 +7,7 @@
         "prettier"
     ],
     "env": {
-        "browser": false,
+        "browser": true,
         "node": true
     },
     "rules": {

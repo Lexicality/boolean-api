@@ -1,0 +1,10 @@
+#!/bin/sh
+
+echo "Cleaning build directory"
+rm -r build
+echo "Creating declaration files"
+tsc --declaration --emitDeclarationOnly
+echo "Creating browser files"
+tsc --module ES2015 --target ES2015 --outdir build/browser
+echo "Creating Node files"
+tsc --outdir build/node

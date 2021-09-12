@@ -1,50 +1,47 @@
 # boolean-api
 
-A nodeJS API for <https://booleans.io/> with ES6 and promise support!
+A Javascript API for <https://booleans.io/>
 
-## Usage
+## Example
 
 ```javascript
-import { createBoolean } from "booleans.io";
+import { createBoolean, createToken } from "booleans.io";
 
-let mybool = createBoolean(false);
+// ...
 
-mybool.get().then(alert);
+let token = await createToken();
+console.log(`BOOLEANS_IO_AUTH_TOKEN="${token}"`); // Save this somewhere!
+
+// ...
+
+let mybool = await createBoolean(token, {
+	value: false,
+	label: "My Special Bool",
+});
+console.log(`MY_BOOL_ID="${mybool.id}"`); // Save this somewhere too!
+
+console.log(mybool.value);
+await mybool.toggle();
+console.log(mybool.value);
 ```
 
-## Advanced usage
+## Front-end usage
 
 ```javascript
-import { Boolean } from "booleans.io";
+import { ReadOnlyBool } from "booleans.io";
 import $ from "jquery";
 
-let featureflag = Boolean("50741f52-9b64-4ee1-a2d6-67ee1a60807c");
+const MY_FEATURE_FLAG = "838e10b9-2d24-409d-ade9-6cd9f00ab0be";
 
-mybool.if(
-	() => {
+async function checkFeature() {
+	let flag = ReadOnlyBool(MY_FEATURE_FLAG);
+	await flag.fetch();
+
+	if (flag.value) {
 		$("#epic-feature").text("YEAAHHHHH");
-	},
-	() => {
+	} else {
 		// :(
 		$("#epic-feature").remove();
-	},
-);
+	}
+}
 ```
-
-## Typescript Support
-
-```javascript
-/// <reference path="../node_modules/booleans.io/index.d.ts" />
-import createBoolean = require('booleans.io');
-var myBool: Boolean = createBoolean(true);
-
-myBool.set(false);
-```
-
-## API
-
--   `Get()`
--   `Set(bool)`
--   `Toggle()`
--   `Destroy()`
--   `If(callback, callback)`
